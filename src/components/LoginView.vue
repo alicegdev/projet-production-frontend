@@ -4,10 +4,10 @@
     <h3>Login</h3>
 
     <label for="username">Nom d'utilisateur : </label>
-    <input type="username" name="username" v-model="username" required />
+    <input type="username" name="username" ref="username" v-model="username" required />
 
     <label for="password">Mot de passe :</label>
-    <input type="password" name="password" v-model="password" required />
+    <input type="password" name="password" ref="password" v-model="password" required />
 
     <button>Login</button>
   </form>
@@ -29,13 +29,13 @@ export default {
 
     const handleSubmit = async (username, password) => {
       const response = await axios.post(
-        "http://localhost:8000/api/loginAsAdmin",
+        "http://localhost:8000/api/users/loginAsAdmin",
         {
           username: username,
           password: password,
         }
       );
-      console.log(response);
+      console.log(username, password, response);
     };
 
     return { handleSubmit, username, password };
