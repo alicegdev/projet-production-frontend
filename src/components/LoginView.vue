@@ -24,15 +24,16 @@ export default {
     NavbarComp,
   },
   setup() {
-    const username = ref("username");
-    const password = ref("password");
+    const username = ref("");
+    const password = ref("");
 
-    const handleSubmit = async (username, password) => {
+    const handleSubmit = async () => {
+      console.log(username.value, password.value);
       const response = await axios.post(
         "http://localhost:8000/api/users/loginAsAdmin",
         {
-          username: username,
-          password: password,
+          username: username.value,
+          password: password.value,
         }
       );
       console.log(username, password, response);
