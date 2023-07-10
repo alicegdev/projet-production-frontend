@@ -5,8 +5,36 @@ import ClassTable from '@/components/ClassTable.vue';
 import HomeView from '@/components/HomeView.vue';
 import LoginView from '@/components/LoginView.vue';
 import ChallengeQuestionTable from '@/components/ChallengeQuestionTable.vue';
+import Admin from '@/components/Admin.vue';
 
 const routes = [
+    {
+        path: '/admin',
+        name: 'AdminTable',
+        component: Admin,
+        children: [
+          {
+            path: 'challenges',
+            name: 'Challenges',
+            component: ChallengeTable,
+          },
+          {
+            path: 'students',
+            name: 'Students',
+            component: StudentTable,
+          },
+          {
+            path: 'classes',
+            name: 'Classes',
+            component: ClassTable,
+          },
+          {
+            path: 'challengeQuestions',
+            name: 'ChallengeQuestions',
+            component: ChallengeQuestionTable,
+          },
+        ],
+      },
   // Route pour /challenges
   {
     path: '/challenges',
