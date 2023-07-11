@@ -2,7 +2,7 @@
   <div>
     <h2>Liste des questions du challenge</h2>
 
-
+    <p v-if="!isLoading">Score: {{ score }}</p>
 
     <div v-if="isLoading" class="loader"></div>
 
@@ -34,6 +34,7 @@ export default {
       lastQuestionId: null, // ID de la dernière question traitée
       filteredQuestions: [], // Liste filtrée des questions à afficher
       isLoading: false, // État de chargement
+      score: 0, // Score du challenge
     };
   },
   mounted() {
@@ -118,6 +119,7 @@ export default {
     },
     getFilteredQuestions(data) {
       const filteredQuestions = [];
+      let score = 0;
       const lastQuestionIndex = data.length - 1;
 
       for (let i = 0; i < data.length; i++) {
@@ -131,7 +133,14 @@ export default {
             copiedQuestion.status = response.status;
             copiedQuestion.message = response.message;
           }
+
           filteredQuestions.push(copiedQuestion);
+
+          if (response.status === "OK") {
+          console.log(question.questionValue)
+          score += question.questionValue;
+          } 
+
         }
 
         if (response.error) {
@@ -144,6 +153,9 @@ export default {
       }
 
       this.filteredQuestions = filteredQuestions;
+      this.score = score;
+
+      console.log('filteredQuestions', filteredQuestions)
 
       if (filteredQuestions.length > 0) {
         this.lastQuestionId = filteredQuestions[filteredQuestions.length - 1].id;
