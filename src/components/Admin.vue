@@ -13,7 +13,7 @@
             <router-link to="/classes">Classes</router-link>
           </li>
           <li>
-            <router-link to="/challengeQuestions">Challenge Questions</router-link>
+            <router-link to="/challengequestion">Challenge Questions</router-link>
           </li>
         </ul>
       </nav>
