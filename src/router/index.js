@@ -8,6 +8,7 @@ import ChallengeQuestionTable from '@/components/ChallengeQuestionTable.vue';
 import Admin from '@/components/Admin.vue';
 import ChallengePage from '@/components/ChallengePage.vue';
 import ChallengeQuestionsPage from '@/components/ChallengeQuestionPage.vue';
+import RegisterUser from '@/components/RegisterUser.vue';
 
 const routes = [
   {
@@ -72,6 +73,12 @@ const routes = [
     path: '/challenge/:id/questions',
     name: 'ChallengeQuestionsPage',
     component: ChallengeQuestionsPage,
+  },
+  // Route pour /register
+  {
+    path: '/register',
+    name: 'RegisterUser',
+    component: RegisterUser,
   },
   // Route pour la page d'accueil
   {
