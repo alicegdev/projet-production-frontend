@@ -16,7 +16,7 @@
       </li>
     </ul>
 
-    <button @click="launchTest" :disabled="isLoading">
+    <button @click="launchTest" :disabled="isLoading || !isConnectionInfoAvailable" :class="getStatusButton()">
       {{ isLoading ? 'Chargement...' : 'Lancer le test' }}
     </button>
   </div>
@@ -28,41 +28,39 @@ import axios from 'axios';
 export default {
   data() {
     return {
-      questions: [], // Liste des questions du challenge
-      solutions: [], // Liste des solutions du challenge
-      solutionsMap: {}, // Map des solutions par ID de question
-      lastQuestionId: null, // ID de la dernière question traitée
-      filteredQuestions: [], // Liste filtrée des questions à afficher
-      isLoading: false, // État de chargement
-      score: 0, // Score du challenge
+      questions: [],
+      solutions: [],
+      solutionsMap: {},
+      lastQuestionId: null,
+      filteredQuestions: [],
+      isLoading: false,
+      score: 0,
+      isConnectionInfoAvailable: false,
     };
   },
   mounted() {
-    // Récupérer l'ID du challenge depuis les paramètres d'URL
     const challengeId = this.$route.params.id;
-    // Appel à l'API pour récupérer les questions du challenge
     axios
       .get(`http://localhost:8000/api/challengeQuestions/${challengeId}`)
       .then((response) => {
         this.questions = response.data.sort((a, b) => a.questionNumber - b.questionNumber);
-        // Récupérer les solutions liées aux questions du challenge
         this.fetchSolutions();
       })
       .catch((error) => {
         console.error('Erreur lors de la récupération des questions du challenge:', error);
       });
+
+    // Vérifier si les informations de connexion de l'étudiant sont disponibles
+    const userId = 4; // Utilisateur connecté (temporaire)
+    this.getStudentConnection(userId);
   },
-  computed: {},
   methods: {
     fetchSolutions() {
-      // Récupérer les IDs des questions du challenge
       const questionIds = this.questions.map((question) => question.id);
-      // Appel à l'API pour récupérer les solutions liées aux questions
       axios
         .get(`http://localhost:8000/api/solutions/forQuestions/${questionIds.join(',')}`)
         .then((response) => {
           this.solutions = response.data;
-          // Créer la map des solutions par ID de question
           this.solutionsMap = {};
           this.solutions.forEach((solution) => {
             this.solutionsMap[solution.challengeQuestionId] = solution;
@@ -73,11 +71,11 @@ export default {
         });
     },
     launchTest() {
-      if (this.isLoading) {
+      if (this.isLoading || !this.isConnectionInfoAvailable) {
         return;
       }
 
-      this.isLoading = true; // Activer l'état de chargement
+      this.isLoading = true;
 
       const orderedSolutions = this.questions
         .map((question) => {
@@ -85,7 +83,7 @@ export default {
           return { questionNumber: question.questionNumber, solution };
         })
         .sort((a, b) => a.questionNumber - b.questionNumber)
-        .filter((item) => item.solution); // Supprimez les questions sans solution
+        .filter((item) => item.solution);
 
       const solutionCommands = orderedSolutions.map((item) => ({
         command: item.solution.command,
@@ -93,7 +91,6 @@ export default {
         expectedResponse: item.solution.expectedResponse,
       }));
 
-      // Appel à l'API pour lancer le test en envoyant les commandes des solutions
       axios
         .post(`http://localhost:8000/api/challengeQuestions/test/${this.questions[0].challengeId}`, {
           solutionCommands,
@@ -102,10 +99,9 @@ export default {
           const filteredResponses = Object.values(response.data);
           this.getFilteredQuestions(filteredResponses);
 
-          // Mise à jour de la liste des questions à afficher
           if (filteredResponses.length > 0) {
             const lastResponse = filteredResponses[filteredResponses.length - 1];
-            this.lastQuestionId = lastResponse.lastQuestionId; // Mettez à jour l'ID de la dernière question traitée
+            this.lastQuestionId = lastResponse.lastQuestionId;
           }
         })
         .catch((error) => {
@@ -113,7 +109,7 @@ export default {
         })
         .finally(() => {
           setTimeout(() => {
-            this.isLoading = false; // Désactiver l'état de chargement après 1 seconde
+            this.isLoading = false;
           }, 1000);
         });
     },
@@ -136,11 +132,9 @@ export default {
 
           filteredQuestions.push(copiedQuestion);
 
-          if (response.status === "OK") {
-          console.log(question.questionValue)
-          score += question.questionValue;
-          } 
-
+          if (response.status === 'OK') {
+            score += question.questionValue;
+          }
         }
 
         if (response.error) {
@@ -155,24 +149,44 @@ export default {
       this.filteredQuestions = filteredQuestions;
       this.score = score;
 
-      console.log('filteredQuestions', filteredQuestions)
-
       if (filteredQuestions.length > 0) {
         this.lastQuestionId = filteredQuestions[filteredQuestions.length - 1].id;
       }
     },
     getStatusClass(question) {
       return {
-        'status-success': question.status === "OK",
-        'status-warning': question.status !== "OK",
+        'status-success': question.status === 'OK',
+        'status-warning': question.status !== 'OK',
       };
     },
     getStatusMessage(question) {
       return `${question.status}: ${question.message}`;
     },
+    getStatusButton() {
+      if (this.isLoading) {
+        return 'btn-loading';
+      } else if (!this.isConnectionInfoAvailable) {
+        return 'btn-disabled';
+      } else {
+        return 'btn-success';
+      }
+
+    },
+    getStudentConnection(userId) {
+      axios
+        .get(`http://localhost:8000/api/studentConnection/${userId}`)
+        .then((response) => {
+          console.log(response.data);
+          this.isConnectionInfoAvailable = true;
+        })
+        .catch((error) => {
+          console.error('Erreur lors de la récupération des informations de connexion:', error);
+        });
+    },
   },
 };
 </script>
+
 
 <style>
 .status-success {
@@ -230,4 +244,77 @@ li {
     transform: rotate(360deg);
   }
 }
+
+.btn {
+  background-color: #00dba4;
+  border: none;
+  color: white;
+  padding: 8px 16px;
+  text-align: center;
+  text-decoration: none;
+  display: inline-block;
+  font-size: 16px;
+  border-radius: 4px;
+  cursor: pointer;
+  transition: all 0.3s ease 0s;
+}
+
+.btn:hover {
+  background-color: #00c295;
+}
+
+.btn-success {
+  background-color: #00dba4;
+  border: none;
+  color: white;
+  padding: 8px 16px;
+  text-align: center;
+  text-decoration: none;
+  display: inline-block;
+  font-size: 16px;
+  border-radius: 4px;
+  cursor: pointer;
+  transition: all 0.3s ease 0s;
+}
+
+.btn-success:hover {
+  background-color: #00c295;
+}
+
+.btn-disabled {
+  background-color: #e0e0e0;
+  border: none;
+  color: white;
+  padding: 8px 16px;
+  text-align: center;
+  text-decoration: none;
+  display: inline-block;
+  font-size: 16px;
+  border-radius: 4px;
+  cursor: not-allowed;
+  transition: all 0.3s ease 0s;
+}
+
+.btn-disabled:hover {
+  background-color: #e0e0e0;
+}
+
+.btn-loading {
+  background-color: #00dba4;
+  border: none;
+  color: white;
+  padding: 8px 16px;
+  text-align: center;
+  text-decoration: none;
+  display: inline-block;
+  font-size: 16px;
+  border-radius: 4px;
+  cursor: progress;
+  transition: all 0.3s ease 0s;
+}
+
+.btn-loading:hover {
+  background-color: #00dba4;
+}
+
 </style>
