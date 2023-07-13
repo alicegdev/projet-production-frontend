@@ -20,6 +20,21 @@
       <button type="submit" :disabled="!isFormValid">Continuer</button>
     </form>
     <router-link v-if="challenge && isFormValid" :to="'/challenge/' + challenge.id + '/questions'">Accéder aux questions</router-link>
+
+    <table>
+  <thead>
+    <tr>
+      <th>Étudiant</th>
+      <th>Score</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr v-for="(score, index) in scores" :key="index">
+      <td>{{ score.studentFirstName }} {{ score.studentLastName }}</td>
+      <td>{{ score.score }}</td>
+    </tr>
+  </tbody>
+</table>
   </div>
 </template>
 
@@ -37,6 +52,7 @@ export default {
       dbName: '',
       sshHost: '',
       sshName: '',
+      scores: []
     };
   },
   computed: {
@@ -103,9 +119,23 @@ export default {
           console.error('Erreur lors de la récupération des détails du challenge:', error);
         });
     },
+    fetchScores() {
+    const challengeId = this.$route.params.id;
+    axios
+      .get(`http://localhost:8000/api/scores/challenge/${challengeId}`)
+      .then((response) => {
+        this.scores = response.data;
+        this.scores.sort((a, b) => b.score - a.score); // Tri des scores par ordre décroissant
+        console.log(this.scores);
+      })
+      .catch((error) => {
+        console.error('Erreur lors de la récupération des scores:', error);
+      });
+  },
   },
   mounted() {
     this.fetchChallenge();
+    this.fetchScores();
   },
 };
 </script>
