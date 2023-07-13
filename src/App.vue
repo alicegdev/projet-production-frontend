@@ -1,14 +1,16 @@
 <template>
-  <router-view></router-view>
+  <LoginView />
 </template>
 
 <script>
 import router from '@/router';
+import LoginView from './components/LoginView.vue';
 
 export default {
   name: 'App',
   router,
-};
+}
+    LoginView;
 </script>
 
 <style>
