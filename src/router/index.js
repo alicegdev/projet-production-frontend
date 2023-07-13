@@ -1,14 +1,14 @@
 import { createRouter, createWebHistory } from "vue-router";
-import LoginView from "./components/LoginView.vue";
-import ChallengeTable from "./components/ChallengeTable.vue";
-import ChallengeQuestionTable from "./components/ChallengeTable.vue";
-import StudentTable from "./components/StudentTable.vue";
-import ClassTable from "./components/ClassTable.vue";
-import HomeView from "./components/HomeView.vue";
-import Admin from "./components/Admin.vue";
-import ChallengePage from "./components/ChallengePage.vue";
-import ChallengeQuestionsPage from "./components/ChallengeQuestionPage.vue";
-import RegisterUser from "./components/RegisterUser.vue";
+import LoginView from "../components/LoginView.vue";
+import ChallengeTable from "../components/ChallengeTable.vue";
+import ChallengeQuestionTable from "../components/ChallengeTable.vue";
+import StudentTable from "../components/StudentTable.vue";
+import ClassTable from "../components/ClassTable.vue";
+import HomeView from "../components/HomeView.vue";
+import Admin from "../components/Admin.vue";
+import ChallengePage from "../components/ChallengePage.vue";
+import ChallengeQuestionsPage from "../components/ChallengeQuestionPage.vue";
+import RegisterUser from "../components/RegisterUser.vue";
 import CryptoJS from "crypto-js";
 
 const routes = [
