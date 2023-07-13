@@ -14,30 +14,33 @@
 </template>
 
 <script>
-import { ref } from 'vue';
-import axios from 'axios';
-import NavbarComp from './NavbarComp.vue';
-import router from '@/router/index';
+import { ref } from "vue";
+import axios from "axios";
+import NavbarComp from "./NavbarComp.vue";
+import router from "@/router/index";
 
 export default {
-  name: 'LoginView',
+  name: "LoginView",
   components: {
     NavbarComp,
   },
   setup() {
-    const username = ref('');
-    const password = ref('');
+    const username = ref("");
+    const password = ref("");
 
     const handleSubmit = async () => {
-      const response = await axios.post('http://localhost:8000/api/users/loginAsAdmin', {
-        username: username.value,
-        password: password.value,
-      });
+      const response = await axios.post(
+        "http://localhost:8000/api/users/loginAsAdmin",
+        {
+          username: username.value,
+          password: password.value,
+        }
+      );
 
       console.log(response);
-      if (response.status === 200 && username.value === 'api-dev') {
+      if (response.status === 200 && username.value === "api-dev") {
         // Redirection vers la page Admin en cas de connexion réussie
-        router.push({ name: 'AdminTable' });
+        router.push({ name: "AdminTable" });
       }
     };
 
