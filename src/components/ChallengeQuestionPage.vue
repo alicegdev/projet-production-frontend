@@ -51,7 +51,7 @@ export default {
       });
 
     // Vérifier si les informations de connexion de l'étudiant sont disponibles
-    const userId = 4; // Utilisateur connecté (temporaire)
+    const userId = 1; // Utilisateur connecté (temporaire)
     this.getStudentConnection(userId);
   },
   methods: {
@@ -103,6 +103,9 @@ export default {
             const lastResponse = filteredResponses[filteredResponses.length - 1];
             this.lastQuestionId = lastResponse.lastQuestionId;
           }
+
+          const score = this.calculateScore(filteredResponses);
+          this.updateScore(score);
         })
         .catch((error) => {
           console.error('Erreur lors du lancement du test:', error);
@@ -170,7 +173,6 @@ export default {
       } else {
         return 'btn-success';
       }
-
     },
     getStudentConnection(userId) {
       axios
@@ -183,10 +185,38 @@ export default {
           console.error('Erreur lors de la récupération des informations de connexion:', error);
         });
     },
+    calculateScore(filteredResponses) {
+      let score = 0;
+      filteredResponses.forEach((response) => {
+        if (response.status === 'OK') {
+          const question = this.questions.find((q) => q.id === response.lastQuestionId);
+          score += question.questionValue;
+        }
+      });
+      return score;
+    },
+    updateScore(score) {
+      const userId = 1; // Utilisateur connecté (temporaire)
+      const challengeId = this.$route.params.id;
+      const data = {
+        studentId: userId,
+        challengeId,
+        score,
+      };
+
+      axios
+        .put('http://localhost:8000/api/scores', data)
+        .then((response) => {
+          console.log('Score updated successfully', response.data);
+          this.score = score;
+        })
+        .catch((error) => {
+          console.error('Error updating score:', error);
+        });
+    },
   },
 };
 </script>
-
 
 <style>
 .status-success {

@@ -54,7 +54,7 @@ export default {
   },
   methods: {
     submitForm() {
-      const userId = 4; // Utilisateur connecté (temporaire)
+      const userId = 1; // Utilisateur connecté (temporaire)
       const challengeId = this.$route.params.id;
       const connectionData = {
         dbHost: this.dbHost,
@@ -69,6 +69,7 @@ export default {
       };
 
       this.insertStudentDBInfo(connectionData);
+      this.createScore(connectionData.userId, connectionData.challengeId);
     },
     insertStudentDBInfo(connectionData) {
       console.log(connectionData);
@@ -79,6 +80,16 @@ export default {
         })
         .catch((error) => {
           console.error('Erreur lors de l\'insertion des informations de connexion:', error);
+        });
+    },
+    createScore(studentId, challengeId) {
+      axios
+        .post('http://localhost:8000/api/scores', { studentId, challengeId })
+        .then((response) => {
+          console.log('Score created successfully', response.data);
+        })
+        .catch((error) => {
+          console.error('Error creating score:', error);
         });
     },
     fetchChallenge() {

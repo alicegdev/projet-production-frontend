@@ -25,7 +25,7 @@
         <input type="text" v-model="search" @input="fetchUsers" @keydown.enter="validateSearch" placeholder="Rechercher un utilisateur" />
         <ul>
           <li v-for="user in filteredUsers" :key="user.id" @click="selectUser(user)">
-            {{ user.username }}
+            {{ user.id }}
           </li>
         </ul>
   
@@ -74,11 +74,11 @@
       },
       selectUser(user) {
         this.currentStudent.userId = user.id;
-        this.search = user.username;
+        this.search = user.id;
         this.users = []; // Réinitialiser la liste des utilisateurs après la sélection
       },
       validateSearch() {
-        const selectedUser = this.users.find((user) => user.username.toLowerCase() === this.search.toLowerCase());
+        const selectedUser = this.users.find((user) => user.id.toString().toLowerCase() === this.search.toLowerCase());
         if (selectedUser) {
           this.currentStudent.userId = selectedUser.id;
         } else {
@@ -140,7 +140,7 @@
     },
     computed: {
       filteredUsers() {
-        return this.users.filter((user) => user.username.toLowerCase().includes(this.search.toLowerCase()));
+        return this.users.filter((user) => user.id.toString().toLowerCase().includes(this.search.toLowerCase()));
       },
     },
   };
