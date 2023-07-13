@@ -10,6 +10,7 @@ const app = createApp(App);
 const router = createRouter({
   history: createWebHistory(),
   routes: [
+    { path: '', component: LoginView },
     { path: '/auth/login', component: LoginView }
     // Autres routes de votre application
   ]
