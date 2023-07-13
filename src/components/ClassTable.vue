@@ -41,7 +41,7 @@
     methods: {
       fetchClasses() {
         axios
-          .get('http://localhost:8000/api/classes')
+          .get('https://challenge-api.xyz/api/classes')
           .then((response) => {
             this.classes = response.data;
           })
@@ -53,7 +53,7 @@
         if (this.editingClass) {
           // Mettre à jour la classe existante
           axios
-            .put(`http://localhost:8000/api/classes/${this.currentClass.id}`, {
+            .put(`https://challenge-api.xyz/api/classes/${this.currentClass.id}`, {
               name: this.currentClass.name,
             })
             .then(() => {
@@ -66,7 +66,7 @@
         } else {
           // Créer une nouvelle classe
           axios
-            .post('http://localhost:8000/api/classes', {
+            .post('https://challenge-api.xyz/api/classes', {
               name: this.currentClass.name,
             })
             .then(() => {
@@ -84,7 +84,7 @@
       },
       deleteClass(id) {
         axios
-          .delete(`http://localhost:8000/api/classes/${id}`)
+          .delete(`https://challenge-api.xyz/api/classes/${id}`)
           .then(() => {
             this.fetchClasses();
           })

@@ -54,7 +54,7 @@
     methods: {
       fetchStudents() {
         axios
-          .get('http://localhost:8000/api/students')
+          .get('https://challenge-api.xyz/api/students')
           .then((response) => {
             this.students = response.data;
           })
@@ -64,7 +64,7 @@
       },
       fetchUsers() {
         axios
-          .get(`http://localhost:8000/api/users?search=${this.search}`)
+          .get(`https://challenge-api.xyz/api/users?search=${this.search}`)
           .then((response) => {
             this.users = response.data;
           })
@@ -89,7 +89,7 @@
         if (this.editingStudent) {
           // Mettre à jour l'étudiant existant
           axios
-            .put(`http://localhost:8000/api/students/${this.currentStudent.id}`, {
+            .put(`https://challenge-api.xyz/api/students/${this.currentStudent.id}`, {
               studentFirstName: this.currentStudent.studentFirstName,
               studentLastName: this.currentStudent.studentLastName,
               userId: this.currentStudent.userId,
@@ -104,7 +104,7 @@
         } else {
           // Créer un nouvel étudiant
           axios
-            .post('http://localhost:8000/api/students', {
+            .post('https://challenge-api.xyz/api/students', {
               studentFirstName: this.currentStudent.studentFirstName,
               studentLastName: this.currentStudent.studentLastName,
               userId: this.currentStudent.userId,
@@ -124,7 +124,7 @@
       },
       deleteStudent(id) {
     axios
-      .delete(`http://localhost:8000/api/students/${id}`)
+      .delete(`https://challenge-api.xyz/api/students/${id}`)
       .then(() => {
         // Utilisez l'id de l'étudiant pour la suppression
         this.fetchStudents();

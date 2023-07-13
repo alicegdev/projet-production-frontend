@@ -86,7 +86,7 @@ export default {
     fetchQuestionsByChallenge() {
       if (this.selectedChallengeId) {
         axios
-          .get(`http://localhost:8000/api/challengeQuestions/${this.selectedChallengeId}`)
+          .get(`https://challenge-api.xyz/api/challengeQuestions/${this.selectedChallengeId}`)
           .then((response) => {
             this.questions = response.data;
           })
@@ -97,7 +97,7 @@ export default {
     },
     fetchChallenges() {
       axios
-        .get('http://localhost:8000/api/challenges')
+        .get('https://challenge-api.xyz/api/challenges')
         .then((response) => {
           this.challenges = response.data;
         })
@@ -109,7 +109,7 @@ export default {
       if (this.editingQuestion) {
         // Mettre à jour la question de défi existante
         axios
-          .put(`http://localhost:8000/api/challengeQuestions/${this.currentQuestion.id}`, {
+          .put(`https://challenge-api.xyz/api/challengeQuestions/${this.currentQuestion.id}`, {
             title: this.currentQuestion.title,
             description: this.currentQuestion.description,
             questionNumber: this.currentQuestion.questionNumber,
@@ -126,7 +126,7 @@ export default {
       } else {
         // Créer une nouvelle question de défi
         axios
-          .post('http://localhost:8000/api/challengeQuestions', {
+          .post('https://challenge-api.xyz/api/challengeQuestions', {
             title: this.currentQuestion.title,
             description: this.currentQuestion.description,
             questionNumber: this.currentQuestion.questionNumber,
@@ -136,7 +136,7 @@ export default {
           .then((response) => {
             const challengeQuestionId = response.data.id;
             axios
-              .post('http://localhost:8000/api/solutions', {
+              .post('https://challenge-api.xyz/api/solutions', {
                 command: this.currentQuestion.solution.command,
                 expectedResponse: this.currentQuestion.solution.expectedResponse,
                 expectedError: this.currentQuestion.solution.expectedError,
@@ -161,7 +161,7 @@ export default {
     },
     deleteQuestion(id) {
       axios
-        .delete(`http://localhost:8000/api/challengeQuestions/${id}`)
+        .delete(`https://challenge-api.xyz/api/challengeQuestions/${id}`)
         .then(() => {
           this.fetchQuestionsByChallenge();
         })

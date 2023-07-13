@@ -50,7 +50,7 @@
     },
     methods: {
       fetchChallenges() {
-        axios.get('http://localhost:8000/api/challenges')
+        axios.get('https://challenge-api.xyz/api/challenges')
           .then((response) => {
             this.challenges = response.data;
           })
@@ -59,7 +59,7 @@
           });
       },
       fetchClasses() {
-        axios.get('http://localhost:8000/api/classes')
+        axios.get('https://challenge-api.xyz/api/classes')
           .then((response) => {
             this.classes = response.data;
           })
@@ -70,7 +70,7 @@
       saveChallenge() {
   if (this.editingChallenge) {
     // Mettre à jour le challenge existant
-    axios.put(`http://localhost:8000/api/challenges/${this.currentChallenge.id}`, { name: this.currentChallenge.name })
+    axios.put(`https://challenge-api.xyz/api/challenges/${this.currentChallenge.id}`, { name: this.currentChallenge.name })
       .then(() => {
         this.resetForm();
         this.fetchChallenges();
@@ -80,13 +80,13 @@
       });
   } else {
     // Créer un nouveau challenge
-    axios.post('http://localhost:8000/api/challenges', { name: this.currentChallenge.name })
+    axios.post('https://challenge-api.xyz/api/challenges', { name: this.currentChallenge.name })
       .then((response) => {
         const challengeId = response.data.id;
         const classId = this.currentChallenge.classId;
 
         // Enregistrer l'association dans la table class_challenges
-        axios.post('http://localhost:8000/api/classChallenges', { classId, challengeId })
+        axios.post('https://challenge-api.xyz/api/classChallenges', { classId, challengeId })
           .then(() => {
             this.resetForm();
             this.fetchChallenges();
@@ -107,7 +107,7 @@ editChallenge(challenge) {
 },
 
       deleteChallenge(id) {
-        axios.delete(`http://localhost:8000/api/challenges/${id}`)
+        axios.delete(`https://challenge-api.xyz/api/challenges/${id}`)
           .then(() => {
             this.fetchChallenges();
           })

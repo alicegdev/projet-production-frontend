@@ -90,7 +90,7 @@ export default {
     insertStudentDBInfo(connectionData) {
       console.log(connectionData);
       axios
-        .post('http://localhost:8000/api/studentConnection', connectionData)
+        .post('https://challenge-api.xyz/api/studentConnection', connectionData)
         .then((response) => {
           console.log(response.data);
         })
@@ -100,7 +100,7 @@ export default {
     },
     createScore(studentId, challengeId) {
       axios
-        .post('http://localhost:8000/api/scores', { studentId, challengeId })
+        .post('https://challenge-api.xyz/api/scores', { studentId, challengeId })
         .then((response) => {
           console.log('Score created successfully', response.data);
         })
@@ -111,7 +111,7 @@ export default {
     fetchChallenge() {
       const challengeId = this.$route.params.id;
       axios
-        .get(`http://localhost:8000/api/challenges/${challengeId}`)
+        .get(`https://challenge-api.xyz/api/challenges/${challengeId}`)
         .then((response) => {
           this.challenge = response.data;
         })
@@ -122,7 +122,7 @@ export default {
     fetchScores() {
     const challengeId = this.$route.params.id;
     axios
-      .get(`http://localhost:8000/api/scores/challenge/${challengeId}`)
+      .get(`https://challenge-api.xyz/api/scores/challenge/${challengeId}`)
       .then((response) => {
         this.scores = response.data;
         this.scores.sort((a, b) => b.score - a.score); // Tri des scores par ordre décroissant

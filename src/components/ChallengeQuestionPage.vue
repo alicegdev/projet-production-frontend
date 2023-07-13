@@ -41,7 +41,7 @@ export default {
   mounted() {
     const challengeId = this.$route.params.id;
     axios
-      .get(`http://localhost:8000/api/challengeQuestions/${challengeId}`)
+      .get(`https://challenge-api.xyz/api/challengeQuestions/${challengeId}`)
       .then((response) => {
         this.questions = response.data.sort((a, b) => a.questionNumber - b.questionNumber);
         this.fetchSolutions();
@@ -58,7 +58,7 @@ export default {
     fetchSolutions() {
       const questionIds = this.questions.map((question) => question.id);
       axios
-        .get(`http://localhost:8000/api/solutions/forQuestions/${questionIds.join(',')}`)
+        .get(`https://challenge-api.xyz/api/solutions/forQuestions/${questionIds.join(',')}`)
         .then((response) => {
           this.solutions = response.data;
           this.solutionsMap = {};
@@ -92,7 +92,7 @@ export default {
       }));
 
       axios
-        .post(`http://localhost:8000/api/challengeQuestions/test/${this.questions[0].challengeId}`, {
+        .post(`https://challenge-api.xyz/api/challengeQuestions/test/${this.questions[0].challengeId}`, {
           solutionCommands,
         })
         .then((response) => {
@@ -176,7 +176,7 @@ export default {
     },
     getStudentConnection(userId) {
       axios
-        .get(`http://localhost:8000/api/studentConnection/${userId}`)
+        .get(`https://challenge-api.xyz/api/studentConnection/${userId}`)
         .then((response) => {
           console.log(response.data);
           this.isConnectionInfoAvailable = true;
@@ -205,7 +205,7 @@ export default {
       };
 
       axios
-        .put('http://localhost:8000/api/scores', data)
+        .put('https://challenge-api.xyz/api/scores', data)
         .then((response) => {
           console.log('Score updated successfully', response.data);
           this.score = score;

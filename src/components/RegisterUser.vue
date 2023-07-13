@@ -34,7 +34,7 @@ export default {
       event.preventDefault();
       console.log("Registering user:", userData);
       axios
-        .post("http://localhost:8000/auth/register", userData)
+        .post("https://challenge-api.xyz/auth/register", userData)
         .then((response) => {
           console.log(response.data);
           this.successMessage =
