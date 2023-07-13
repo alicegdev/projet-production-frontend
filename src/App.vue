@@ -1,6 +1,4 @@
-<template>
-  <LoginView />
-</template>
+
 
 <script>
 import router from '@/router';
