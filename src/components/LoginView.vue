@@ -30,7 +30,7 @@ export default {
 
     const handleSubmit = async () => {
       const response = await axios.post(
-        "api/users/loginAsAdmin",
+        "https://challenge-api.xyz/api/users/loginAsAdmin",
         {
           username: username.value,
           password: password.value,

@@ -2,7 +2,6 @@
   "name": "projet-production",
   "version": "0.1.0",
   "private": true,
-  "proxy": "https://challenge-api.xyz/",
   "scripts": {
     "serve": "vue-cli-service serve",
     "build": "vue-cli-service build",
